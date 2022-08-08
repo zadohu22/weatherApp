@@ -214,6 +214,15 @@ let displayWeather = async () => {
   );
 };
 
+let gifTest = async () => {
+  let img = document.createElement('img');
+  let response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=BRo3VV7iEKnPHr2jxOG5SNpgB6CgzqDG&s=rainy_weather&weirdness=0', { mode: 'cors' });
+  let x = await response.json();
+  console.log(x);
+  img.src = x.data.images.downsized_medium.url;
+  Dom.container.appendChild(img);
+};
+gifTest();
 let submitListener = () => {
   Dom.submit.addEventListener('click', async () => {
     while (Dom.container.firstChild) {
