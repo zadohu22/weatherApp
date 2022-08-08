@@ -51,4 +51,17 @@ form {
   display: -ms-flexbox;
   display: flex;
 }
+
+#att {
+  font-size: 10px;
+  margin-bottom: 20px;
+}
+
+#gif:hover {
+  cursor: default;
+}
+
+iframe:hover {
+  cursor: default;
+}
 /*# sourceMappingURL=styles.css.map */
