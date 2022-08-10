@@ -69,6 +69,7 @@ let displayCities = async () => {
   response.forEach((e, i) => {
     let content = document.createElement('p');
     content.textContent = `${e.name}, ${e.state}, ${e.country}`;
+    content.style.cursor = "pointer";
     Dom.container.appendChild(content);
     content.id = 'content';
   });
@@ -139,6 +140,27 @@ let formatWeather = async () => {
   return format;
 };
 
+let changeBackground = (condition) => {
+  if (condition === 'Clouds') {
+    document.body.style.backgroundImage =
+      'url("./billy-huynh-v9bnfMCyKbg-unsplash.jpg")';
+  } else if (condition === 'Rain' || condition === 'Drizzle') {
+    document.body.style.backgroundImage =
+      'url("./mitodru-ghosh-YfveMgXSWkc-unsplash.jpg")';
+  } else if (condition === 'Thunderstorm') {
+    document.body.style.backgroundImage =
+      'url("./raychel-sanner-1cJXplTxrmI-unsplash.jpg")';
+  } else if (condition === 'Snow') {
+    document.body.style.backgroundImage =
+      'url("./brian-jones-s8QSJTJI6qg-unsplash.jpg")';
+  }else if(condition === 'Clear'){
+    document.body.style.backgroundImage =
+      'url("./antunes-vila-nova-neto-IUAyoABilaA-unsplash.jpg")';
+  }else{
+    document.body.removeAttribute('backgroundImage');
+  }
+};
+
 let displayWeather = async () => {
   let response = await formatWeather();
   console.log(response);
@@ -163,6 +185,8 @@ let displayWeather = async () => {
     `Conditions: ${response.conditions} (${response.conditionsDesc})`,
     Dom.container
   );
+  changeBackground(`${response.conditions}`);
+
   let cloudCover = create(
     'p',
     'cloudCover',
@@ -216,19 +240,29 @@ let displayWeather = async () => {
 
 let gifTest = async () => {
   let img = document.createElement('img');
-  let response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=BRo3VV7iEKnPHr2jxOG5SNpgB6CgzqDG&s=rainy_weather&weirdness=0', { mode: 'cors' });
+  let response = await fetch(
+    'https://api.giphy.com/v1/gifs/translate?api_key=BRo3VV7iEKnPHr2jxOG5SNpgB6CgzqDG&s=rainy_weather&weirdness=0',
+    { mode: 'cors' }
+  );
   let x = await response.json();
   console.log(x);
   img.src = x.data.images.downsized_medium.url;
   Dom.container.appendChild(img);
 };
-gifTest();
+// gifTest();
+
 let submitListener = () => {
   Dom.submit.addEventListener('click', async () => {
     while (Dom.container.firstChild) {
       Dom.container.removeChild(Dom.container.firstChild);
     }
-    displayCities();
+    Dom.container.classList.remove('hide');
+    try {
+      displayCities();
+    }catch(e){
+      console.log(e);
+    }
+    
   });
 };
 submitListener();
