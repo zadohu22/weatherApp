@@ -8,17 +8,17 @@
 
 // api key = 19e7974406ed3779128ae8daa0956d4f
 
-import { Dom } from './Dom';
-import { create } from './create';
+import { Dom } from "./Dom";
+import { create } from "./create";
 
 let arr = [];
-let cityName = '';
+let cityName = "";
 let getInitialCoordinates = async () => {
   let cityVal = Dom.city.value;
   // let stateVal = Dom.state.value;
   let response = await fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${cityVal},1&limit=10&appid=19e7974406ed3779128ae8daa0956d4f`,
-    { mode: 'cors' }
+    `https://api.openweathermap.org/geo/1.0/direct?q=${cityVal},1&limit=10&appid=19e7974406ed3779128ae8daa0956d4f`,
+    { mode: "cors" }
   );
   let usable = await response.json();
   // let lat = usable[0].lat;
@@ -30,8 +30,8 @@ let getInitialCoordinates = async () => {
 
 let getSpecificCoordinates = async (city, state, country) => {
   let response = await fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}1&limit=10&appid=19e7974406ed3779128ae8daa0956d4f`,
-    { mode: 'cors' }
+    `https://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}1&limit=10&appid=19e7974406ed3779128ae8daa0956d4f`,
+    { mode: "cors" }
   );
   let usable = await response.json();
   console.log(usable);
@@ -43,12 +43,12 @@ let getSpecificCoordinates = async (city, state, country) => {
 };
 
 let pickCity = () => {
-  let content = document.querySelectorAll('#content');
+  let content = document.querySelectorAll("#content");
 
   content.forEach((e, i) => {
-    e.addEventListener('click', () => {
+    e.addEventListener("click", () => {
       let text = e.innerText;
-      let format = text.split(',');
+      let format = text.split(",");
       arr = [];
       arr.push(format[0], format[1], format[2]);
       cityName = format[0];
@@ -67,11 +67,11 @@ let pickCity = () => {
 let displayCities = async () => {
   let response = await getInitialCoordinates();
   response.forEach((e, i) => {
-    let content = document.createElement('p');
+    let content = document.createElement("p");
     content.textContent = `${e.name}, ${e.state}, ${e.country}`;
     content.style.cursor = "pointer";
     Dom.container.appendChild(content);
-    content.id = 'content';
+    content.id = "content";
   });
   console.log(response);
   pickCity();
@@ -141,23 +141,23 @@ let formatWeather = async () => {
 };
 
 let changeBackground = (condition) => {
-  if (condition === 'Clouds') {
+  if (condition === "Clouds") {
     document.body.style.backgroundImage =
       'url("./billy-huynh-v9bnfMCyKbg-unsplash.jpg")';
-  } else if (condition === 'Rain' || condition === 'Drizzle') {
+  } else if (condition === "Rain" || condition === "Drizzle") {
     document.body.style.backgroundImage =
       'url("./mitodru-ghosh-YfveMgXSWkc-unsplash.jpg")';
-  } else if (condition === 'Thunderstorm') {
+  } else if (condition === "Thunderstorm") {
     document.body.style.backgroundImage =
       'url("./raychel-sanner-1cJXplTxrmI-unsplash.jpg")';
-  } else if (condition === 'Snow') {
+  } else if (condition === "Snow") {
     document.body.style.backgroundImage =
       'url("./brian-jones-s8QSJTJI6qg-unsplash.jpg")';
-  }else if(condition === 'Clear'){
+  } else if (condition === "Clear") {
     document.body.style.backgroundImage =
       'url("./antunes-vila-nova-neto-IUAyoABilaA-unsplash.jpg")';
-  }else{
-    document.body.removeAttribute('backgroundImage');
+  } else {
+    document.body.removeAttribute("backgroundImage");
   }
 };
 
@@ -165,84 +165,84 @@ let displayWeather = async () => {
   let response = await formatWeather();
   console.log(response);
   let title = create(
-    'h2',
-    'title',
-    'title',
+    "h2",
+    "title",
+    "title",
     `Weather for ${cityName}`,
     Dom.container
   );
   let temp = create(
-    'p',
-    'temp',
-    'temp',
+    "p",
+    "temp",
+    "temp",
     `Temperature: ${response.temp}`,
     Dom.container
   );
   let conditions = create(
-    'p',
-    'conditions',
-    'conditions',
+    "p",
+    "conditions",
+    "conditions",
     `Conditions: ${response.conditions} (${response.conditionsDesc})`,
     Dom.container
   );
   changeBackground(`${response.conditions}`);
 
   let cloudCover = create(
-    'p',
-    'cloudCover',
-    'cloudCover',
+    "p",
+    "cloudCover",
+    "cloudCover",
     `Cloud Cover: ${response.cloudCover}%`,
     Dom.container
   );
   if (response.humidity !== undefined) {
     let humidity = create(
-      'p',
-      'humidity',
-      'humidity',
+      "p",
+      "humidity",
+      "humidity",
       `Humidity: ${response.humidity}%`,
       Dom.container
     );
   }
   let feelsLike = create(
-    'p',
-    'feelsLike',
-    'feelsLike',
+    "p",
+    "feelsLike",
+    "feelsLike",
     `Feels Like: ${response.feelsLike}`,
     Dom.container
   );
-  if (response.windSpeed !== 'undefined') {
+  if (response.windSpeed !== "undefined") {
     let windSpeed = create(
-      'p',
-      'windSpeed',
-      'windSpeed',
+      "p",
+      "windSpeed",
+      "windSpeed",
       `Wind Speed: ${response.windSpeed} MpH`,
       Dom.container
     );
   }
   if (response.windGust !== undefined) {
     let windGust = create(
-      'p',
-      'windGust',
-      'windGust',
+      "p",
+      "windGust",
+      "windGust",
       `Wind Gust: ${response.windGust} MpH`,
       Dom.container
     );
   }
   let converted = response.visibility / 1000;
   let visibility = create(
-    'p',
-    'visibility',
-    'visibility',
+    "p",
+    "visibility",
+    "visibility",
     `Visibility: ${converted}km`,
     Dom.container
   );
 };
 
 let gifTest = async () => {
-  let img = document.createElement('img');
+  let img = document.createElement("img");
   let response = await fetch(
-    'https://api.giphy.com/v1/gifs/translate?api_key=BRo3VV7iEKnPHr2jxOG5SNpgB6CgzqDG&s=rainy_weather&weirdness=0',
-    { mode: 'cors' }
+    "https://api.giphy.com/v1/gifs/translate?api_key=BRo3VV7iEKnPHr2jxOG5SNpgB6CgzqDG&s=rainy_weather&weirdness=0",
+    { mode: "cors" }
   );
   let x = await response.json();
   console.log(x);
@@ -252,17 +252,16 @@ let gifTest = async () => {
 // gifTest();
 
 let submitListener = () => {
-  Dom.submit.addEventListener('click', async () => {
+  Dom.submit.addEventListener("click", async () => {
     while (Dom.container.firstChild) {
       Dom.container.removeChild(Dom.container.firstChild);
     }
-    Dom.container.classList.remove('hide');
+    Dom.container.classList.remove("hide");
     try {
       displayCities();
-    }catch(e){
+    } catch (e) {
       console.log(e);
     }
-    
   });
 };
 submitListener();
